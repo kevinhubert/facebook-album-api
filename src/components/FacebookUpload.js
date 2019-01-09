@@ -1,6 +1,7 @@
 import React from "react";
 import Album from "./Album";
 import { facebookLogin, getAlbums } from "../mixins/facebook";
+import ImageList from "./ImageList";
 
 class FacebookUpload extends React.Component {
   // Initialize State
@@ -11,6 +12,12 @@ class FacebookUpload extends React.Component {
         data: [],
         paging: {},
         albumId: null
+      },
+      currentAlbum: {},
+      imagesObj: {
+        data: [],
+        paging: {},
+        imageId: null
       }
     };
   }
@@ -54,17 +61,18 @@ class FacebookUpload extends React.Component {
   };
 
   // Get first photos for individual album
-  getAlbumImages = id => {
-    const albumId = (this.state = { ...this.state.albumId });
-    albumId.flag = true;
-    this.setState({ albumId: id });
+  getAlbumImages = album => {
+    // const albumObjId = (this.state = { ...this.state.albumId });
+    // albumObjId.flag = true;
+    // this.setState({ albumId: id });
+    console.log(album);
 
-    // window.FB.api(
-    //   albumId + "/?fields=photos.limit(10){picture,images}",
-    //   response => {
-    //     console.log(response);
-    //   }
-    // );
+    window.FB.api(
+      this.state.currentAlbum.id + "/?fields=photos.limit(10){picture,images}",
+      response => {
+        this.setState({ imagesObj: response.photos });
+      }
+    );
   };
 
   render() {
@@ -79,11 +87,17 @@ class FacebookUpload extends React.Component {
           {this.state.albumsObj.data.map(album => {
             return (
               <Album
-                data={album}
+                album={album}
                 key={album.id}
-                getSelectedAlbumId={this.getAlbumImages}
+                getAlbumImages={this.getAlbumImages}
               />
             );
+          })}
+        </ul>
+        <h1>Album Photos</h1>
+        <ul>
+          {this.state.imagesObj.data.map(image => {
+            return <ImageList data={image} key={image.id} />;
           })}
         </ul>
       </div>
