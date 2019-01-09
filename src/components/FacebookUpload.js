@@ -62,17 +62,16 @@ class FacebookUpload extends React.Component {
 
   // Get first photos for individual album
   getAlbumImages = album => {
-    // const albumObjId = (this.state = { ...this.state.albumId });
-    // albumObjId.flag = true;
-    // this.setState({ albumId: id });
-    console.log(album);
-
-    window.FB.api(
-      this.state.currentAlbum.id + "/?fields=photos.limit(10){picture,images}",
-      response => {
-        this.setState({ imagesObj: response.photos });
-      }
-    );
+    console.log(this.state);
+    this.setState({ currentAlbum: album });
+    console.log(this.state);
+    // window.FB.api(
+    //   this.state.currentAlbum.id + "/?fields=photos.limit(10){picture,images}",
+    //   response => {
+    //     console.log(response.photos);
+    //     this.setState({ imagesObj: response.photos });
+    //   }
+    // );
   };
 
   render() {
@@ -94,12 +93,7 @@ class FacebookUpload extends React.Component {
             );
           })}
         </ul>
-        <h1>Album Photos</h1>
-        <ul>
-          {this.state.imagesObj.data.map(image => {
-            return <ImageList data={image} key={image.id} />;
-          })}
-        </ul>
+        <h1>{this.state.currentAlbum.name}</h1>
       </div>
     );
   }

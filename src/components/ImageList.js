@@ -2,11 +2,11 @@ import React from "react";
 
 class ImageList extends React.Component {
   render() {
-    const { picture } = this.props.data;
+    const { picture } = this.props.image;
     return (
-      <div>
+      <li>
         <img src={picture} />
-      </div>
+      </li>
     );
   }
 }
